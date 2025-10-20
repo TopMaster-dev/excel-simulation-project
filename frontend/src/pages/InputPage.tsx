@@ -9,8 +9,8 @@ export default function InputPage() {
 	const [customerName, setCustomerName] = useState('') //入力!E4
 	const [age, setAge] = useState<number | ''>('') //入力!E5
 	const [propertyName, setPropertyName] = useState('') //入力!E7
-	const [purchaseY, setPurchaseY] = useState('') // 入力!E8 
-	const [purchaseM, setPurchaseM] = useState('') //  入力!G8
+	const [purchaseY, setPurchaseY] = useState<number | ''>('') // 入力!E8 
+	const [purchaseM, setPurchaseM] = useState<number | ''>('') //  入力!G8
 	const [propertyPrice, setPropertyPrice] = useState<number | ''>('') //入力!E9
 	const [ownPrice, setOwnPrice] = useState<number | ''>('') //入力!E10
 	const [borrowPrice, setBorrowPrice] = useState<number | ''>('') //
@@ -128,61 +128,61 @@ export default function InputPage() {
     const goDisplay = async (e: React.FormEvent) => {
         e.preventDefault()
 		const data = {
-			customerName: customerName,
-			age: age,
-			propertyName: propertyName,
-			purchaseY: purchaseY,
-			purchaseM: purchaseM,
-			propertyPrice: propertyPrice,
-			ownPrice: ownPrice,
-			borrowPrice: borrowPrice,
-			loanPeriod: loanPeriod,
-			interestRate: interestRate,
-			riseIYears: riseIYears,
-			riseIRate: riseIRate,
-			earlyRYears: earlyRYears,
-			earlyRPrice: earlyRPrice,
-			minRiseIYear: minRiseIYear,
-			maxRiseIYear: maxRiseIYear,
-			earlyNum: earlyNum,
-			rentMonthly: rentMonthly,
-			declineRYears: declineRYears,
-			declineRate: declineRate,
-			minDeclineRYear: minDeclineRYear,
-			maxDeclineRYear: maxDeclineRYear,
-			changeRYears: changeRYears,
-			changeRentPrice: changeRentPrice,
-			renewalFeeYears: renewalFeeYears,
-			renewalFeePrice: renewalFeePrice,
-			manageFeeMonthly: manageFeeMonthly,
-			repairFundMonthly: repairFundMonthly,
-			nextRepairYears: nextRepairYears,
-			nextRepairRate: nextRepairRate,
-			collectFeeMonthly: collectFeeMonthly,
-			minCollectFeeYear: minCollectFeeYear,
-			maxCollectFeeYear: maxCollectFeeYear,
-			equipmentRepairYears: equipmentRepairYears,
-			equipmentRepairPrice: equipmentRepairPrice,
-			emptyRoomYears: emptyRoomYears,
-			emptyRoomMonth: emptyRoomMonth,
-			originalRestorationYears: originalRestorationYears,
-			originalRestorationPrice: originalRestorationPrice,
-			landPropertyPrice: landPropertyPrice,
-			landPropertyPrice1: landPropertyPrice1,
-			landPropertyPrice2: landPropertyPrice2,
-			landPropertyPrice3: landPropertyPrice3,
-			landPropertyPrice4: landPropertyPrice4,
-			landPropertyPrice5: landPropertyPrice5,
-			sellPrice: sellPrice,
-			sellRate: sellRate,
-			sellYears: sellYears,
-			sellRate1: sellRate1,
-			minSellYear: minSellYear,
-			maxSellYear: maxSellYear,
-			fixedAssetTaxRate: fixedAssetTaxRate,
-			fixedAssetTaxRate1: fixedAssetTaxRate1,
-			fixedAssetTaxRate2: fixedAssetTaxRate2,
-			taxEffect: taxEffect,
+			"入力!E4": customerName,
+			"入力!E5": age,
+			"入力!E7": propertyName,
+			"入力!E8": purchaseY,
+			"入力!G8": purchaseM,
+			"入力!E9": propertyPrice,
+			"入力!E10": ownPrice,
+			"入力!E12": borrowPrice,
+			"入力!E13": loanPeriod,
+			"入力!E14": interestRate,
+			"入力!E15": riseIYears,
+			"入力!G15": riseIRate,
+			"入力!E17": earlyRYears,
+			"入力!G17": earlyRPrice,
+			"入力!E16": minRiseIYear,
+			"入力!G16": maxRiseIYear,
+			"入力!E18": earlyNum,
+			"入力!E20": rentMonthly,
+			"入力!E21": declineRYears,
+			"入力!G21": declineRate,
+			"入力!E22": minDeclineRYear,
+			"入力!G22": maxDeclineRYear,
+			"入力!E23": changeRYears,
+			"入力!G23": changeRentPrice,
+			"入力!E24": renewalFeeYears,
+			"入力!G24": renewalFeePrice,
+			"入力!E25": manageFeeMonthly,
+			"入力!E26": repairFundMonthly,
+			"入力!E27": nextRepairYears,
+			"入力!G27": nextRepairRate,
+			"入力!E29": collectFeeMonthly,
+			"入力!E28": minCollectFeeYear,
+			"入力!G28": maxCollectFeeYear,
+			"入力!E30": equipmentRepairYears,
+			"入力!G30": equipmentRepairPrice,
+			"入力!E31": emptyRoomYears,
+			"入力!G31": emptyRoomMonth,
+			"入力!E32": originalRestorationYears,
+			"入力!G32": originalRestorationPrice,
+			"入力!E33": landPropertyPrice,
+			"入力!E34": landPropertyPrice1,
+			"入力!E35": landPropertyPrice2,
+			"入力!E36": landPropertyPrice3,
+			"入力!G36": landPropertyPrice4,
+			"入力!E37": landPropertyPrice5,
+			"入力!E39": sellPrice,
+			"入力!G39": sellRate,
+			"入力!E40": sellYears,
+			"入力!G40": sellRate1,
+			"入力!E41": minSellYear,
+			"入力!G41": maxSellYear,
+			"入力!E43": fixedAssetTaxRate,
+			"入力!E44": fixedAssetTaxRate1,
+			"入力!E45": fixedAssetTaxRate2,
+			"入力!E47": taxEffect,
 		};
         try {
             await fetch(`${API_URL}/simulation`, {
@@ -213,7 +213,7 @@ export default function InputPage() {
 						<label className="field">
 							<span className="field-label">氏名</span>
 							<div className="input-adorn">
-								<input className="input" value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="氏名" />
+								<input className="input" type='text' value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="氏名" />
 							</div>
 						</label>
 						<label className="field">
@@ -230,15 +230,15 @@ export default function InputPage() {
 						<label className="field">
 							<span className="field-label">物件名・部屋番号</span>
 							<div className="input-row">
-								<input className="input" placeholder="物件名" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
+								<input className="input" type='text' placeholder="物件名" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
 							</div>
 						</label>
 						<label className="field">
 							<span className="field-label">購入年月</span>
 							<div className="input-adorn">
-								<input className="input input-number" type="number" value={purchaseY} onChange={(e) => setPurchaseY(e.target.value)} />
+								<input className="input input-number" type="number" value={purchaseY} max={9999} min={1000} placeholder='2025' onChange={(e) => setPurchaseY(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
 								<span className="adorn">年</span>
-								<input className="input input-number" type="number" value={purchaseM} onChange={(e) => setPurchaseM(e.target.value)} />
+								<input className="input input-number" type="number" value={purchaseM} max={12} min={1} placeholder='10' onChange={(e) => setPurchaseM(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
 								<span className="adorn">月</span>
 								<span className="adorn">(西暦で入力)</span>
 							</div>
@@ -309,7 +309,7 @@ export default function InputPage() {
 							<div className="input-adorn">
                                 <input className="input input-number" type="number" min={0} value={riseIYears} placeholder='0' onChange={(e) => setRiseIYears(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
 								<span className="adorn note">年毎に</span>
-                                <input className="input input-number" type="number" min={0} value={riseIRate} placeholder='0.00' onChange={(e) => setRiseIRate(e.target.value === '' ? 0 : parseFloat(e.target.value))} />
+                                <input className="input input-number" type="number" min={0} max={100} value={riseIRate} placeholder='0.00' onChange={(e) => setRiseIRate(e.target.value === '' ? 0 : parseFloat(e.target.value))} />
 								<span className="adorn note">％上昇</span>
 							</div>
 						</label>
@@ -323,13 +323,13 @@ export default function InputPage() {
 							</div>
 						</label>
 						<label className='field'>
-							<span className="field-label">(対象期間)</span>
+							<span className="field-label">金利上昇(対象期間)</span>
 							<div className="input-adorn">
 								<input
 									className="input"
 									type="number"
-									min="1800"
-									max="2200"
+									min={1800}
+									max={2200}
 									value={minRiseIYear}
 									onChange={e => setMinRiseIYear(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
 									placeholder="開始年"
@@ -338,8 +338,8 @@ export default function InputPage() {
 								<input
 									className="input"
 									type="number"
-									min="1800"
-									max="2200"
+									min={1800}
+									max={2200}
 									value={maxRiseIYear}
 									onChange={e => setMaxRiseIYear(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
 									placeholder="終了年"
@@ -412,9 +412,9 @@ export default function InputPage() {
 						<label className='field'>
 							<span className="field-label">更新料</span>
 							<div className="input-adorn">
-                                <input className="input input-number" type="number" min={0} value={renewalFeeYears} placeholder='0' onChange={(e) => setRenewalFeeYears(e.target.value === '' ? '' : parseInt(e.target.value, 10))} />
+                                <input className="input input-number" type="number" min={0} value={renewalFeeYears} placeholder='0' onChange={(e) => setRenewalFeeYears(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
 								<span className="adorn note">年毎に</span>
-                                <input className="input input-number" type="number" min={0} value={renewalFeePrice} placeholder='0' onChange={(e) => setRenewalFeePrice(e.target.value === '' ? 0 : parseFloat(e.target.value))} />
+                                <input className="input input-number" type="number" min={0} value={renewalFeePrice} placeholder='0' onChange={(e) => setRenewalFeePrice(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
 								<span className="adorn note">ヶ月分</span>
 							</div>
 						</label>
@@ -454,7 +454,7 @@ export default function InputPage() {
 							</div>
 						</label>
 						<label className='field'>
-							<span className="field-label">(対象期間)</span>
+							<span className="field-label">修繕積立金(対象期間)</span>
 							<div className="input-adorn">
 								<input
 									className="input"
@@ -483,7 +483,7 @@ export default function InputPage() {
 							<div className="input-adorn">
                                 <input className="input input-number" type="number" min={0} value={equipmentRepairYears} placeholder='0' onChange={(e) => setEquipmentRepairYears(e.target.value === '' ? '' : parseInt(e.target.value, 10))} />
 								<span className="adorn note">年毎に</span>
-                                <input className="input input-number" type="number" min={0} value={equipmentRepairPrice} placeholder='0' onChange={(e) => setEquipmentRepairPrice(e.target.value === '' ? '' : parseFloat(e.target.value))} />
+                                <input className="input" type="number" min={0} value={equipmentRepairPrice} placeholder='0' onChange={(e) => setEquipmentRepairPrice(e.target.value === '' ? '' : parseFloat(e.target.value))} />
 								<span className="adorn note">円</span>
 							</div>
 						</label>
