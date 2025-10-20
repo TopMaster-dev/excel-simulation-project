@@ -1,0 +1,40 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Noto Sans JP', Inter, system-ui, Arial, sans-serif; color: #09323d; background: #f4f7f8; }
+.page { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+
+.header { display: flex; align-items: center; justify-content: space-between; margin: 24px 0; }
+.badge { background: #e8f3f5; color: #0a4956; border: 2px solid #0a4956; padding: 10px 16px; border-radius: 12px; font-weight: 700; }
+.date { color: #6b7d85; font-size: 12px; }
+
+.form-card { background: #fff; border: 1px solid #d9e5ea; border-radius: 12px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+.section { margin-bottom: 18px; }
+.section-title { font-size: 14px; color: #0a4956; margin: 0 0 8px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.span-2 { grid-column: span 2; }
+.field-label { color: #5a6d75; font-size: 12px; }
+.input { height: 36px; padding: 0 10px; border: 1px solid #c7d7de; border-radius: 6px; background: #f9fbfc; }
+.input:focus { outline: none; border-color: #2a9ec0; box-shadow: 0 0 0 3px rgba(42,158,192,0.15); background: #fff; }
+.input-row { display: flex; gap: 8px; }
+.input-adorn { display: flex; align-items: center; gap: 8px; }
+.adorn { color: #6b7d85; font-size: 12px; white-space: nowrap; }
+.adorn.note { color: #8a98a0; }
+
+.actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.btn { height: 36px; padding: 0 20px; border-radius: 8px; border: 0; cursor: pointer; font-weight: 600; }
+.btn.secondary { background: #eef4f6; color: #0a4956; }
+.btn.secondary:hover { background: #e3eef2; }
+.btn.primary { background: #2a9ec0; color: #fff; }
+.btn.primary:hover { background: #2188a6; }
+
+h1 { margin: 0 0 12px; font-size: 20px; }
+.controls { display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); gap: 12px; align-items: end; margin-bottom: 12px; }
+label { display: flex; flex-direction: column; font-size: 12px; color: #546e7a; gap: 6px; }
+button { height: 36px; padding: 0 14px; border-radius: 8px; background: #2196f3; color: #fff; border: 0; cursor: pointer; }
+button:hover { background: #1976d2; }
+.checkbox { flex-direction: row; align-items: center; gap: 8px; }
+.chart { background: #fff; border: 1px solid #e3e7ee; border-radius: 8px; padding: 6px; }
+.table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e3e7ee; border-radius: 8px; overflow: hidden; }
+.table td, .table th { padding: 8px 10px; border-bottom: 1px solid #eef1f6; }
+.table tr:last-child td { border-bottom: 0; }
+.input-number { width: 80px; }
