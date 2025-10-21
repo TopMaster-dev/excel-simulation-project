@@ -1,4 +1,4 @@
-from vba_function import monthly_repayment_fs, set_rate_fs, calc_rent_fs, repair_fund_fs, sell_price_fs
+from simulation_data.vba_function import monthly_repayment_fs, set_rate_fs, calc_rent_fs, repair_fund_fs, sell_price_fs
 
 def IF(condition, true_value, false_value):
     if condition:

@@ -1,5 +1,5 @@
-import excel_function as ef
-from excel_log import log1_Sheet_All
+import simulation_data.excel_function as ef
+from simulation_data.excel_log import log1_Sheet_All
 
 data = {
     "入力!E4": "サンプル",

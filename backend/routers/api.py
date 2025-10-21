@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request
+from simulation_data.excel_graph import graph_All_cell
 import json
 
 router = APIRouter(prefix="/api", tags=["api"])
@@ -21,7 +22,7 @@ def _to_float(value, default: float = 0.0) -> float:
         return default
 
 
-@router.get("/simulation")
+@router.post("/simulation")
 async def read_simulation(request: Request):
     # body = await request.json()
     # input_data = json.loads(body) if isinstance(body, str) else body
@@ -83,12 +84,13 @@ async def read_simulation(request: Request):
     #     "入力!E45": float(input_data.get("入力!E45")),
     #     "入力!E47": float(input_data.get("入力!E47")),
     # }
-
+    result = graph_All_cell()
     # print(data)
 
     response = {
         "ok": True,
         "message": "Simulation parameters received",
+        "result" : result
     }
 
     return response

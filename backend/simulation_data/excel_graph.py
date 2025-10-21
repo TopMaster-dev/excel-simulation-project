@@ -1,5 +1,5 @@
-import excel_function as ef
-from excel_output import output_ALL_cell
+import simulation_data.excel_function as ef
+from simulation_data.excel_output import output_ALL_cell
 data = {
     "入力!E4": "サンプル",
     "入力!E5": 30,
@@ -177,5 +177,3 @@ def graph_All_cell():
     graph_All_one_cell("グラフ1")
     graph_All_one_cell("グラフ2")
     return output
-
-print(graph_All_cell())
