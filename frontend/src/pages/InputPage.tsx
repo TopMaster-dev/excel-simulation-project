@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSimulation } from '../hooks/useSimulation'
 
 const WS_URL = (import.meta.env.VITE_WS_URL as string) || 'ws://localhost:8000/ws/simulate';
 const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000/api';
@@ -184,17 +183,17 @@ export default function InputPage() {
 			"入力!E45": fixedAssetTaxRate2,
 			"入力!E47": taxEffect,
 		};
-        try {
-            await fetch(`${API_URL}/simulation`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        } catch (_) {
-            // swallow error and continue navigation
-        }
+        // try {
+        //     await fetch(`${API_URL}/simulation`, {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(data)
+        //     });
+        // } catch (_) {
+        //     // swallow error and continue navigation
+        // }
 
-        navigate('/display', { state: { frequency: 2, sampleRate: 120, duration: 5, name: 'run', persist: true } })
+        navigate('/display')
 	}
 
 	const today = new Date()

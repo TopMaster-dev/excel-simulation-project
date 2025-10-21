@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from simulation_data.excel_graph import graph_All_cell
 import json
-
+result_data = {}
 router = APIRouter(prefix="/api", tags=["api"])
 
 @router.get("/")
@@ -21,6 +21,16 @@ def _to_float(value, default: float = 0.0) -> float:
     except Exception:
         return default
 
+@router.post("/display")
+async def read_display():
+    data = graph_All_cell()
+    
+    response = {
+        "ok": True,
+        "message": "Display data",
+        "result" : data
+    }
+    return response
 
 @router.post("/simulation")
 async def read_simulation(request: Request):
@@ -86,11 +96,9 @@ async def read_simulation(request: Request):
     # }
     result = graph_All_cell()
     # print(data)
-
     response = {
         "ok": True,
         "message": "Simulation parameters received",
-        "result" : result
     }
 
     return response
