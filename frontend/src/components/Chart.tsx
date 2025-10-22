@@ -3,8 +3,6 @@ import uPlot from 'uplot'
 import 'uplot/dist/uPlot.min.css'
 
 export type ChartHandle = {
-	appendPoint: (t: number, v: number) => void
-	reset: () => void
 	setData: (data: ChartData) => void
 }
 
@@ -22,7 +20,6 @@ export function useChart(title: string) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const plotRef = useRef<uPlot | null>(null)
 	const dataRef = useRef<[number[], number[], number[], number[], number[], number[], number[]]>([[], [], [], [], [], [], []])
-
 	useEffect(() => {
 		if (!containerRef.current) return
 		const opts: uPlot.Options = {
@@ -32,49 +29,49 @@ export function useChart(title: string) {
 			scales: { 
 				x: { 
 					time: false,
-					range: [2025, 2105]
+					range: [new Date().getFullYear(), new Date().getFullYear() + 59]
 				},
 				y: {
-					range: [0, 4000]
+					range: [0, 12000]
 				}
 			},
 			series: [
-				{ label: 'Year' },
+				{ label: '(年度)' },
 				{ 
-					label: '売却時', 
+					label: '完済年', 
 					stroke: '#ff9800',
 					width: 4,
-					points: { show: false }
+					points: { show: true }
 				},
 				{ 
-					label: '支払額', 
+					label: '支払後借入残高', 
 					stroke: '#f44336',
 					width: 4,
-					points: { show: true, size: 4 }
+					points: { show: true }
 				},
 				{ 
-					label: '家賃収入', 
+					label: '売却予想額', 
 					stroke: '#2196f3',
 					width: 4,
-					points: { show: true, size: 4 }
+					points: { show: true }
 				},
 				{ 
-					label: '年間収支', 
+					label: '収支累計', 
 					stroke: '#4caf50',
 					width: 4,
-					points: { show: true, size: 4 }
+					points: { show: true }
 				},
 				{ 
-					label: '累計収支', 
+					label: '売却予想額+収支累計', 
 					stroke: '#03a9f4',
 					width: 4,
-					points: { show: true, size: 4 }
+					points: { show: true }
 				},
 				{ 
-					label: '借入残高', 
+					label: '精算収支', 
 					stroke: '#1976d2',
 					width: 4,
-					points: { show: true, size: 4 }
+					points: { show: true }
 				}
 			],
 			axes: [
@@ -95,7 +92,7 @@ export function useChart(title: string) {
 			],
 		}
 		plotRef.current = new uPlot(opts, dataRef.current, containerRef.current)
-		const handle = () => plotRef.current?.setSize({ width: containerRef.current!.clientWidth, height: 400 })
+		const handle = () => plotRef.current?.setSize({ width: containerRef.current!.clientWidth, height: 300 })
 		window.addEventListener('resize', handle)
 		return () => {
 			window.removeEventListener('resize', handle)
@@ -129,7 +126,7 @@ export function useChart(title: string) {
 		plotRef.current?.setData(dataRef.current)
 	}
 
-	return { containerRef, appendPoint, reset, setData }
+	return { containerRef, setData }
 }
 
 export default function Chart({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) {

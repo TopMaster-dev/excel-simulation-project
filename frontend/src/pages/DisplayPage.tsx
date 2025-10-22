@@ -1,21 +1,10 @@
-import React, { useMemo, useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Chart, { useChart } from '../components/Chart'
 // import { useSimulation } from '../hooks/useSimulation'
 
 // const WS_URL = (import.meta.env.VITE_WS_URL as string) || 'ws://localhost:8000/ws/simulate'
 const API_URL = "http://localhost:8000/api"
-
-type SimulationData = {
-	customerName: string
-	propertyName: string
-	propertyPrice: number
-	ownFunds: number
-	loanAmount: number
-	loanPeriod: number
-	interestRate: number
-	calculationDate: string
-}
 
 type ChartData = {
 	years: number[]
@@ -28,7 +17,6 @@ type ChartData = {
 }
 
 export default function DisplayPage() {
-	const location = useLocation()
 	const navigate = useNavigate()
 	const [activeTable, setActiveTable] = useState<true | false>(true)
 	const [hideTable, setHideTable] = useState(false)
@@ -37,30 +25,18 @@ export default function DisplayPage() {
 	const [log_one, setLog_one] = useState<any>({})
 	const [log_two, setLog_two] = useState<any>({})
 	
-	// Mock simulation data - replace with actual data from backend
-	const simulationData: SimulationData = {
-		customerName: '鈴木貴裕',
-		propertyName: 'エステム ミラージュ',
-		propertyPrice: 33800000,
-		ownFunds: 2000000,
-		loanAmount: 31800000,
-		loanPeriod: 35,
-		interestRate: 1.675,
-		calculationDate: '2025年9月28日'
-	}
-
 	// Mock chart data - replace with actual simulation results
 	const chartData: ChartData = {
-		years: Array.from({ length: 81 }, (_, i) => 2025 + i),
-		saleValue: [3300, ...Array(80).fill(0)], // Sale value only at year 0
-		payments: Array(81).fill(330), // Monthly payments converted to 万円
-		rentIncome: Array(81).fill(330), // Rent income
-		annualBalance: Array(81).fill(0), // Annual balance
-		cumulativeBalance: Array(81).fill(0), // Cumulative balance
-		loanBalance: Array.from({ length: 81 }, (_, i) => Math.max(0, 3000 - (i * 37.5))) // Decreasing loan balance
+		years: Array.from({ length: 60 }, (_, i) => new Date().getFullYear() + i),
+		saleValue: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!T${i + 6}`] : log_two[`グラフ2!T${i + 6}`]), // Sale value only at year 0
+		payments: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!O${i + 6}`] : log_two[`グラフ2!O${i + 6}`]), // Monthly payments converted to 万円
+		rentIncome:  Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!P${i + 6}`] : log_two[`グラフ2!P${i + 6}`]), // Rent income
+		annualBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!Q${i + 6}`] : log_two[`グラフ2!Q${i + 6}`]), // Annual balance
+		cumulativeBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!R${i + 6}`] : log_two[`グラフ2!R${i + 6}`]), // Cumulative balance
+		loanBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!S${i + 6}`] : log_two[`グラフ2!S${i + 6}`]) // Decreasing loan balance
 	}
 
-	const { containerRef, appendPoint, reset, setData } = useChart('収支シミュレーション')
+	const { containerRef, setData } = useChart('収支シミュレーション')
 
 	const loadData = async () => {
 		try {
@@ -88,12 +64,13 @@ export default function DisplayPage() {
 			setLog_two({})
 		}
 	}
-
-	// Populate chart with simulation data
 	useEffect(() => {
 		loadData()
+	}, [activeTable])
+	// loadData()
+	useEffect(() => {
 		setData(chartData)
-	}, [])	
+	}, [log_one])	
 
 	return (
 		<div className="page">
@@ -103,16 +80,16 @@ export default function DisplayPage() {
 					マンション投資収支シミュレーション
 				</div>
 				<div className="calculation-date">
-					試算日: {simulationData.calculationDate}
+					試算日: {new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
 				</div>
 			</div>
 
 			{/* Report Details */}
 			<div className="report-details">
 				<div className="customer-info">
-					<div className="customer-name">{simulationData.customerName} 様</div>
+					<div className="customer-name">{log_one["グラフ1!B2"]}</div>
 					<div className="report-description">
-						年間別収支表(60年) 集金代行・{simulationData.propertyName} (2025年12月 取得で試算)
+						年間別収支表(60年) 集金代行・{output_one[`出力1!G2`]} ({output_one[`出力1!B4`]}年{output_one[`出力1!C4`]}月 取得で試算)
 					</div>
 				</div>
 				
@@ -191,12 +168,12 @@ export default function DisplayPage() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>{simulationData.propertyName}</td>
-							<td>{simulationData.propertyPrice.toLocaleString()}</td>
-							<td>{simulationData.ownFunds.toLocaleString()}</td>
-							<td>{simulationData.loanAmount.toLocaleString()}</td>
-							<td>{simulationData.loanPeriod}年</td>
-							<td>{simulationData.interestRate}%</td>
+							<td>{output_one[`出力1!G2`]}</td>
+							<td>{output_one[`出力1!O2`]}</td>
+							<td>{output_one[`出力1!T2`] == ""?0:output_one[`出力1!T2`]}</td>
+							<td>{output_one[`出力1!T3`]}</td>
+							<td>{output_one[`出力1!V3`]}年</td>
+							<td>{(output_one[`出力1!W3`] * 100).toFixed(3)}%</td>
 						</tr>
 					</tbody>
 				</table>
@@ -326,19 +303,6 @@ export default function DisplayPage() {
 					</div>
 				</div>
 			</div>
-
-			{/* Controls */}
-			{/* <div className="simulation-controls">
-				<button onClick={() => start({ frequency: 2, sampleRate: 120, duration: 5, name: 'run', persist: true })} disabled={running}>
-					Start Simulation
-				</button>
-				<button onClick={stop} disabled={!running}>
-					Stop Simulation
-				</button>
-				<button onClick={() => navigate('/')}>
-					Edit Inputs
-				</button>
-			</div> */}
 		</div>
 	)
 }

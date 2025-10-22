@@ -64,6 +64,12 @@ output = {}
 
 def output_init_cell():
     global output
+    key = "出力1!B4"
+    value = data["入力!E8"]
+    output[key] = value
+    key = "出力1!C4"
+    value = data["入力!G8"]
+    output[key] = value
     key = "出力1!G2"
     value = data["入力!E7"]
     output[key] = value
