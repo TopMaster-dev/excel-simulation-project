@@ -24,11 +24,26 @@ def _to_float(value, default: float = 0.0) -> float:
 @router.post("/display")
 async def read_display():
     data = graph_All_cell()
-    
+    result_log_one = {}
+    result_log_two = {}
+    result_output_one = {}
+    result_output_two = {}
+    for key, value in data.items():
+        if "出力1" in key:
+            result_output_one[key] = value
+        elif "出力2" in key:
+            result_output_two[key] = value
+        elif "グラフ1" in key:
+            result_log_one[key] = value
+        elif "グラフ2" in key:
+            result_log_two[key] = value
     response = {
         "ok": True,
         "message": "Display data",
-        "result" : data
+        "result_log_one" : result_log_one,
+        "result_log_two" : result_log_two,
+        "result_output_one" : result_output_one,
+        "result_output_two" : result_output_two
     }
     return response
 

@@ -406,6 +406,7 @@ button {
   position: relative;
   overflow: scroll;
   transition: all 0.5s;
+  height: 600px;
 }
 
 .summary-data {
@@ -424,6 +425,10 @@ button {
 .summary-data thead {
   position: sticky;
   top: 0;
+}
+
+.summary-data {
+  margin-bottom: 10px;
 }
 
 .sticky {
