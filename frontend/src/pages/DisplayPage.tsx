@@ -11,7 +11,6 @@ type ChartData = {
 	saleValue: number[]
 	payments: number[]
 	rentIncome: number[]
-	annualBalance: number[]
 	cumulativeBalance: number[]
 	loanBalance: number[]
 }
@@ -28,13 +27,43 @@ export default function DisplayPage() {
 	// Mock chart data - replace with actual simulation results
 	const chartData: ChartData = {
 		years: Array.from({ length: 60 }, (_, i) => new Date().getFullYear() + i),
-		saleValue: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!T${i + 6}`] : log_two[`グラフ2!T${i + 6}`]), // Sale value only at year 0
-		payments: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!O${i + 6}`] : log_two[`グラフ2!O${i + 6}`]), // Monthly payments converted to 万円
-		rentIncome:  Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!P${i + 6}`] : log_two[`グラフ2!P${i + 6}`]), // Rent income
-		annualBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!Q${i + 6}`] : log_two[`グラフ2!Q${i + 6}`]), // Annual balance
-		cumulativeBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!R${i + 6}`] : log_two[`グラフ2!R${i + 6}`]), // Cumulative balance
-		loanBalance: Array.from({ length: 60 }, (_, i) => activeTable == true ? log_one[`グラフ1!S${i + 6}`] : log_two[`グラフ2!S${i + 6}`]) // Decreasing loan balance
-	}
+	  
+		saleValue: Array.from({ length: 60 }, (_, i) => {
+		  const val = activeTable
+			? Number(log_one?.[`グラフ1!T${i + 6}`]) || 0
+			: Number(log_two?.[`グラフ2!T${i + 6}`]) || 0;
+		  return Number(val.toFixed(0));
+		}),
+	  
+		payments: Array.from({ length: 60 }, (_, i) => {
+		  const val = activeTable
+			? Number(log_one?.[`グラフ1!O${i + 6}`]) || 0
+			: Number(log_two?.[`グラフ2!O${i + 6}`]) || 0;
+		  return Number(val.toFixed(0));
+		}),
+	  
+		rentIncome: Array.from({ length: 60 }, (_, i) => {
+		  const val = activeTable
+			? Number(log_one?.[`グラフ1!P${i + 6}`]) || 0
+			: Number(log_two?.[`グラフ2!P${i + 6}`]) || 0;
+		  return Number(val.toFixed(0));
+		}),
+
+		cumulativeBalance: Array.from({ length: 60 }, (_, i) => {
+		  const val = activeTable
+			? Number(log_one?.[`グラフ1!R${i + 6}`]) || 0
+			: Number(log_two?.[`グラフ2!R${i + 6}`]) || 0;
+		  return Number(val.toFixed(0));
+		}),
+	  
+		loanBalance: Array.from({ length: 60 }, (_, i) => {
+		  const val = activeTable
+			? Number(log_one?.[`グラフ1!S${i + 6}`]) || 0
+			: Number(log_two?.[`グラフ2!S${i + 6}`]) || 0;
+		  return Number(val.toFixed(0));
+		}),
+	  };
+	  
 
 	const { containerRef, setData } = useChart('収支シミュレーション')
 
@@ -57,7 +86,7 @@ export default function DisplayPage() {
 				setLog_two({})
 			}
 		} catch(err) {
-			console.error('Error loading data:', err)
+			console.error('サーバーエラー')
 			setOutput_one({})
 			setOutput_two({})
 			setLog_one({})
@@ -185,7 +214,7 @@ export default function DisplayPage() {
 					<table className="summary-table summary-data">
 						<thead>
 							<tr>
-								<th colSpan={4} className='sticky'>年度</th>
+								<th colSpan={4}>年度</th>
 								<th colSpan={12}>支出</th>
 								<th colSpan={6}>収入</th>
 								<th colSpan={3}>収支差額</th>
@@ -194,7 +223,7 @@ export default function DisplayPage() {
 								<th rowSpan={2}>精算収支</th>
 							</tr>
 							<tr>
-								<th className='sticky'>No</th>
+								<th>No</th>
 								<th>年度</th>
 								<th>経過<br />年数</th>
 								<th>年齢</th>

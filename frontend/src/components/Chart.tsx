@@ -11,7 +11,6 @@ export type ChartData = {
 	saleValue: number[]
 	payments: number[]
 	rentIncome: number[]
-	annualBalance: number[]
 	cumulativeBalance: number[]
 	loanBalance: number[]
 }
@@ -19,20 +18,20 @@ export type ChartData = {
 export function useChart(title: string) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const plotRef = useRef<uPlot | null>(null)
-	const dataRef = useRef<[number[], number[], number[], number[], number[], number[], number[]]>([[], [], [], [], [], [], []])
+	const dataRef = useRef<[number[], number[], number[], number[], number[], number[]]>([[], [], [], [], [], []])
 	useEffect(() => {
 		if (!containerRef.current) return
 		const opts: uPlot.Options = {
 			title,
 			width: containerRef.current.clientWidth,
-			height: 400,
+			height: 600,
 			scales: { 
 				x: { 
 					time: false,
 					range: [new Date().getFullYear(), new Date().getFullYear() + 59]
 				},
 				y: {
-					range: [0, 12000]
+					range: [0, 10000]
 				}
 			},
 			series: [
@@ -56,20 +55,14 @@ export function useChart(title: string) {
 					points: { show: true }
 				},
 				{ 
-					label: '収支累計', 
-					stroke: '#4caf50',
-					width: 4,
-					points: { show: true }
-				},
-				{ 
 					label: '売却予想額+収支累計', 
-					stroke: '#03a9f4',
+					stroke: '#00ffe5',
 					width: 4,
 					points: { show: true }
 				},
 				{ 
 					label: '精算収支', 
-					stroke: '#1976d2',
+					stroke: '#8f00ff',
 					width: 4,
 					points: { show: true }
 				}
@@ -92,7 +85,7 @@ export function useChart(title: string) {
 			],
 		}
 		plotRef.current = new uPlot(opts, dataRef.current, containerRef.current)
-		const handle = () => plotRef.current?.setSize({ width: containerRef.current!.clientWidth, height: 300 })
+		const handle = () => plotRef.current?.setSize({ width: containerRef.current!.clientWidth, height: 600 })
 		window.addEventListener('resize', handle)
 		return () => {
 			window.removeEventListener('resize', handle)
@@ -100,29 +93,15 @@ export function useChart(title: string) {
 			plotRef.current = null
 		}
 	}, [title])
-
-	const appendPoint = (t: number, v: number) => {
-		const [xs, ...series] = dataRef.current
-		xs.push(t)
-		series[0].push(v) // Add to first series (sale value)
-		plotRef.current?.setData(dataRef.current)
-	}
-
 	const setData = (data: ChartData) => {
 		dataRef.current = [
 			data.years,
 			data.saleValue,
 			data.payments,
 			data.rentIncome,
-			data.annualBalance,
 			data.cumulativeBalance,
 			data.loanBalance
 		]
-		plotRef.current?.setData(dataRef.current)
-	}
-
-	const reset = () => {
-		dataRef.current = [[], [], [], [], [], [], []]
 		plotRef.current?.setData(dataRef.current)
 	}
 
