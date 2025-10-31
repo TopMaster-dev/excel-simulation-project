@@ -37,6 +37,7 @@ def MONTH(date):
     return int(month)
 
 def MOD(value, divisor):
+    if(divisor == 0): return 0
     return value % divisor
 
 def IFERROR(value, error_value):

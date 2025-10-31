@@ -192,9 +192,9 @@ def set_rate_fs(passed_month: int,
     # Build date bounds if provided
     date_s = None
     date_e = None
-    if year_s is not None and year_s != "":
+    if year_s is not None and year_s != "" and year_s != 0:
         date_s = __import__("datetime").date(int(year_s), 1, 1)
-    if year_e is not None and year_e != "":
+    if year_e is not None and year_e != "" and year_s != 0:
         date_e = __import__("datetime").date(int(year_e), 12, 31)
     
     # if d_date is before start or after end, return pre_rate
@@ -204,6 +204,7 @@ def set_rate_fs(passed_month: int,
         return pre_rate
 
     # Use passed_month mod (12 * yearly_interval) == 0
+    if(yi == 0): return pre_rate + float(add_rate)
     if (passed_month % (12 * yi)) == 0:
         return pre_rate + float(add_rate)
     else:
@@ -341,9 +342,9 @@ def calc_rent_fs(passed_month: int,
     date_s = None
     date_e = None
 
-    if val(rgA[1]) not in (None, ""):
+    if val(rgA[1]) not in (None, "", 0):
         date_s = __import__("datetime").date(int(val(rgA[1])), 1, 1)
-    if val(rgB[1]) not in (None, ""):
+    if val(rgB[1]) not in (None, "", 0):
         date_e = __import__("datetime").date(int(val(rgB[1])), 12, 31)
 
     buy_date = __import__("datetime").date(int(year_st), int(month_st), 1)
@@ -369,11 +370,13 @@ def calc_rent_fs(passed_month: int,
             result = pre_rent
         else:
             # rent increase every (yearly_interval * 12) months
-            if (passed_month % (yi * 12)) == 0:
-                # Round(preRent * (1 + addRate/100), 0)
-                result = round(pre_rent * (1.0 + add_rate / 100.0))
+            if(yi == 0): result = round(pre_rent * (1.0 + add_rate / 100.0))
             else:
-                result = pre_rent
+                if (passed_month % (yi * 12)) == 0:
+                    # Round(preRent * (1 + addRate/100), 0)
+                    result = round(pre_rent * (1.0 + add_rate / 100.0))
+                else:
+                    result = pre_rent
 
     # ChangeRent section: afterYear/newRent override
     if after_year not in (None, "") and new_rent not in (None, ""):
@@ -427,14 +430,16 @@ def repair_fund_fs(passed_year: int,
 
     date_s = None
     date_e = None
-    if year_s not in (None, ""):
+    if year_s not in (None, "", 0):
         date_s = __import__("datetime").date(int(year_s), 1, 1)
-    if year_e not in (None, ""):
+    if year_e not in (None, "", 0):
         date_e = __import__("datetime").date(int(year_e), 12, 31)
 
     # Calculate addCt based on VBA logic
-    add_ct = (passed_year - 1) // yi
+    if yi == 0 : add_ct = 0
+    else: add_ct = (passed_year - 1) // yi
     pre_fund = get_pre_fund_fs(base_fund, add_rate, add_ct)
+    if yi == 0: return float(pre_fund * 12 * (1.0 + add_rate / 100.0 * (12 - int(buy_month) + 1) / 12.0))
 
     # If yearS present, VBA recalculates addCt with (Year(dDate) + yi -1 - yearS) \ yi
     if year_s not in (None, ""):
@@ -454,6 +459,7 @@ def repair_fund_fs(passed_year: int,
             return float(pre_fund * 12)
 
     # If passed_year mod yearly_interval == 0 -> special formula
+    
     if (passed_year % yi) == 0:
         # RepairFund_FS = preFund * 12 * (1 + addRate / 100 * (12 - buyMonth + 1) / 12)
         return float(pre_fund * 12 * (1.0 + add_rate / 100.0 * (12 - int(buy_month) + 1) / 12.0))
@@ -481,16 +487,16 @@ def sell_price_fs(passed_year: int,
     d_date = __import__("datetime").date(int(d_year), 1, 1)
     date_s = None
     date_e = None
-    if year_s not in (None, ""):
+    if year_s not in (None, "", 0):
         date_s = __import__("datetime").date(int(year_s), 1, 1)
-    if year_e not in (None, ""):
+    if year_e not in (None, "", 0):
         date_e = __import__("datetime").date(int(year_e), 12, 31)
 
     if date_s is not None and d_date < date_s:
         return float(pre_price)
     if date_e is not None and d_date > date_e:
         return float(pre_price)
-
+    if yi == 0: return float(pre_price * (1.0 - add_rate / 100.0))
     if (passed_year % yi) == 0:
         return float(pre_price * (1.0 - add_rate / 100.0))
     else:

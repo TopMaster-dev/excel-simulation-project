@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'http://localhost:5000/api';
 
 export default function InputPage() {
 	const [customerName, setCustomerName] = useState('') //入力!E4
@@ -211,7 +211,7 @@ export default function InputPage() {
 				alert("入力値を正しく入力してください。");
 			}
         } catch (err) {
-            alert("サーバーエラー");
+            console.log(err);			
         }
 	}
 
@@ -224,55 +224,55 @@ export default function InputPage() {
 			"入力!E8": purchaseY,
 			"入力!G8": purchaseM,
 			"入力!E9": propertyPrice,
-			"入力!E10": ownPrice,
-			"入力!E12": borrowPrice,
-			"入力!E13": loanPeriod,
-			"入力!E14": interestRate,
-			"入力!E15": riseIYears,
-			"入力!G15": riseIRate,
-			"入力!E17": earlyRYears,
-			"入力!G17": earlyRPrice,
-			"入力!E16": minRiseIYear,
-			"入力!G16": maxRiseIYear,
-			"入力!E18": earlyNum,
-			"入力!E20": rentMonthly,
-			"入力!E21": declineRYears,
-			"入力!G21": declineRate,
-			"入力!E22": minDeclineRYear,
-			"入力!G22": maxDeclineRYear,
-			"入力!E23": changeRYears,
-			"入力!G23": changeRentPrice,
-			"入力!E24": renewalFeeYears,
-			"入力!G24": renewalFeePrice,
-			"入力!E25": manageFeeMonthly,
-			"入力!E26": repairFundMonthly,
-			"入力!E27": nextRepairYears,
-			"入力!G27": nextRepairRate,
-			"入力!E29": collectFeeMonthly,
-			"入力!E28": minCollectFeeYear,
-			"入力!G28": maxCollectFeeYear,
-			"入力!E30": equipmentRepairYears,
-			"入力!G30": equipmentRepairPrice,
-			"入力!E31": emptyRoomYears,
-			"入力!G31": emptyRoomMonth,
-			"入力!E32": originalRestorationYears,
-			"入力!G32": originalRestorationPrice,
-			"入力!E33": landPropertyPrice,
-			"入力!E34": landPropertyPrice1,
-			"入力!E35": landPropertyPrice2,
-			"入力!E36": landPropertyPrice3,
-			"入力!G36": landPropertyPrice4,
-			"入力!E37": landPropertyPrice5,
-			"入力!E39": sellPrice,
-			"入力!G39": sellRate,
-			"入力!E40": sellYears,
-			"入力!G40": sellRate1,
-			"入力!E41": minSellYear,
-			"入力!G41": maxSellYear,
-			"入力!E43": fixedAssetTaxRate,
-			"入力!E44": fixedAssetTaxRate1,
-			"入力!E45": fixedAssetTaxRate2,
-			"入力!E47": taxEffect,
+			"入力!E10": ownPrice == "" ? 0 : ownPrice,
+			"入力!E12": borrowPrice == "" ? 0 : borrowPrice,
+			"入力!E13": loanPeriod == "" ? 0 : loanPeriod,
+			"入力!E14": interestRate == "" ? 0 : interestRate,
+			"入力!E15": riseIYears == "" ? 0 : riseIYears,
+			"入力!G15": riseIRate == "" ? 0 : riseIRate,
+			"入力!E17": earlyRYears == "" ? 0 : earlyRYears,
+			"入力!G17": earlyRPrice == "" ? 0 : earlyRPrice,
+			"入力!E16": minRiseIYear == "" ? 0 : minRiseIYear,
+			"入力!G16": maxRiseIYear == "" ? 0 : maxRiseIYear,
+			"入力!E18": earlyNum == "" ? 0 : earlyNum,
+			"入力!E20": rentMonthly == "" ? 0 : rentMonthly,
+			"入力!E21": declineRYears == "" ? 0 : declineRYears,
+			"入力!G21": declineRate == "" ? 0 : declineRate,
+			"入力!E22": minDeclineRYear == "" ? 0 : minDeclineRYear,
+			"入力!G22": maxDeclineRYear == "" ? 0 : maxDeclineRYear,
+			"入力!E23": changeRYears == "" ? 0 : changeRYears,
+			"入力!G23": changeRentPrice == "" ? 0 : changeRentPrice,
+			"入力!E24": renewalFeeYears == "" ? 0 : renewalFeeYears,
+			"入力!G24": renewalFeePrice == "" ? 0 : renewalFeePrice,
+			"入力!E25": manageFeeMonthly == "" ? 0 : manageFeeMonthly,
+			"入力!E26": repairFundMonthly == "" ? 0 : repairFundMonthly,
+			"入力!E27": nextRepairYears == "" ? 0 : nextRepairYears,
+			"入力!G27": nextRepairRate == "" ? 0 : nextRepairRate,
+			"入力!E29": collectFeeMonthly == "" ? 0 : collectFeeMonthly,
+			"入力!E28": minCollectFeeYear == "" ? 0 : minCollectFeeYear,
+			"入力!G28": maxCollectFeeYear == "" ? 0 : maxCollectFeeYear,
+			"入力!E30": equipmentRepairYears == "" ? 0 : equipmentRepairYears,
+			"入力!G30": equipmentRepairPrice == "" ? 0 : equipmentRepairPrice,
+			"入力!E31": emptyRoomYears == "" ? 0 : emptyRoomYears,
+			"入力!G31": emptyRoomMonth == "" ? 0 : emptyRoomMonth,
+			"入力!E32": originalRestorationYears == "" ? 0 : originalRestorationYears,
+			"入力!G32": originalRestorationPrice == "" ? 0 : originalRestorationPrice,
+			"入力!E33": landPropertyPrice == "" ? 0 : landPropertyPrice,
+			"入力!E34": landPropertyPrice1 == "" ? 0 : landPropertyPrice1,
+			"入力!E35": landPropertyPrice2 == "" ? 0 : landPropertyPrice2,
+			"入力!E36": landPropertyPrice3 == "" ? 0 : landPropertyPrice3,
+			"入力!G36": landPropertyPrice4 == "" ? 0 : landPropertyPrice4,
+			"入力!E37": landPropertyPrice5 == "" ? 0 : landPropertyPrice5,
+			"入力!E39": sellPrice == "" ? 0 : sellPrice,
+			"入力!G39": sellRate == "" ? 0 : sellRate,
+			"入力!E40": sellYears == "" ? 0 : sellYears,
+			"入力!G40": sellRate1 == "" ? 0 : sellRate1,
+			"入力!E41": minSellYear == "" ? 0 : minSellYear,
+			"入力!G41": maxSellYear == "" ? 0 : maxSellYear,
+			"入力!E43": fixedAssetTaxRate == "" ? 0 : fixedAssetTaxRate,
+			"入力!E44": fixedAssetTaxRate1 == "" ? 0 : fixedAssetTaxRate1,
+			"入力!E45": fixedAssetTaxRate2 == "" ? 0 : fixedAssetTaxRate2,
+			"入力!E47": taxEffect == "" ? 0 : taxEffect,
 		};
         try {			
             const response = await fetch(`${API_URL}/simulation`, {
@@ -310,13 +310,13 @@ export default function InputPage() {
 						<label className="field">
 							<span className="field-label">氏名</span>
 							<div className="input-adorn">
-								<input className="input" type='text' value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="氏名" />
+								<input className="input" type='text' value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="氏名" required/>
 							</div>
 						</label>
 						<label className="field">
 							<span className="field-label">年齢</span>
 							<div className="input-adorn">
-                            <input className="input" type="number" min={0} max={100} value={age || ''} placeholder='0'  onChange={(e) => setAge(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
+                            <input className="input" type="number" min={0} max={100} value={age || ''} placeholder='0'  onChange={(e) => setAge(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} required/>
 							</div>
 						</label>
 					</div>
@@ -327,18 +327,18 @@ export default function InputPage() {
 						<label className="field">
 							<span className="field-label">物件名・部屋番号</span>
 							<div className="input-row">
-								<input className="input" type='text' placeholder="物件名" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
+								<input className="input" type='text' placeholder="物件名" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} required/>
 							</div>
 						</label>
 						<label className="field">
 							<span className="field-label">購入年月</span>
 							<div className="input-adorn">
 								<div className='input-adorn'>
-									<input className="input input-number" type="number" value={purchaseY || ''} max={9999} min={1000} placeholder='2025' onChange={(e) => setPurchaseY(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
+									<input className="input input-number" type="number" value={purchaseY || ''} max={9999} min={1000} placeholder='2025' onChange={(e) => setPurchaseY(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} required/>
 									<span className="adorn">年</span>
 								</div>
 								<div className='input-adorn'>
-									<input className="input input-number" type="number" value={purchaseM || ''} max={12} min={1} placeholder='10' onChange={(e) => setPurchaseM(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} />
+									<input className="input input-number" type="number" value={purchaseM || ''} max={12} min={1} placeholder='10' onChange={(e) => setPurchaseM(e.target.value === '' ? 0 : parseInt(e.target.value, 10))} required/>
 									<span className="adorn">月</span>
 								</div>
 								<span className="adorn">(西暦で入力)</span>
@@ -347,7 +347,7 @@ export default function InputPage() {
 						<label className="field">
 							<span className="field-label">物件価格</span>
 							<div className="input-adorn">
-                                <input className="input" type="text" value={propertyPrice || ''} onChange={(e) => setPropertyPrice(e.target.value === '' ? 0 : parseFloat(e.target.value))} placeholder='0' />
+                                <input className="input" type="text" value={propertyPrice || ''} onChange={(e) => setPropertyPrice(e.target.value === '' ? 0 : parseFloat(e.target.value))} placeholder='0' required/>
 								<span className="adorn">円</span>
 							</div>
 						</label>

@@ -33,19 +33,25 @@ def output_init_cell():
     value = 12 - data["入力!G8"] + 1
     output[key] = value
     key = "入力!I32"
-    value = ef.IFERROR(int(data["入力!E33"] / 2 *  data["入力!E36"] / data["入力!G36"] * data["入力!E43"] / 100), 0)
+    if data["入力!G36"] == 0: value = 0
+    else:
+        value = ef.IFERROR(int(data["入力!E33"] / 2 *  data["入力!E36"] / data["入力!G36"] * data["入力!E43"] / 100), 0)
     output[key] = value
     key = "入力!I33"
     value = int((data["入力!E37"] *  data["入力!E43"]) / 100)
     output[key] = value
     key = "入力!I34"
-    value = ef.IFERROR(int(data["入力!E34"] * data["入力!E36"] / data["入力!G36"] * data["入力!E44"] / 100), 0)
+    if data["入力!G36"] == 0: value = 0
+    else:
+        value = ef.IFERROR(int(data["入力!E34"] * data["入力!E36"] / data["入力!G36"] * data["入力!E44"] / 100), 0)
     output[key] = value
     key = "入力!I35"
     value = int((data["入力!E37"] *  data["入力!E44"]) / 100)
     output[key] = value
     key = "入力!I36"
-    value = ef.IFERROR(int(data["入力!E35"] * data["入力!E36"] / data["入力!G36"] * data["入力!E45"] / 100), 0)
+    if data["入力!G36"] == 0: value = 0
+    else:
+        value = ef.IFERROR(int(data["入力!E35"] * data["入力!E36"] / data["入力!G36"] * data["入力!E45"] / 100), 0)
     output[key] = value
     key = "入力!I37"
     value = int((data["入力!E37"] *  data["入力!E45"]) / 100)

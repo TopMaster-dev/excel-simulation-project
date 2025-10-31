@@ -4,7 +4,7 @@ import Chart, { useChart } from '../components/Chart'
 // import { useSimulation } from '../hooks/useSimulation'
 
 // const WS_URL = (import.meta.env.VITE_WS_URL as string) || 'ws://localhost:8000/ws/simulate'
-const API_URL = "http://localhost:8000/api"
+const API_URL = "http://localhost:5000/api"
 
 type ChartData = {
 	years: number[]
