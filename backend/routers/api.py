@@ -9,32 +9,62 @@ router = APIRouter(prefix="/api", tags=["api"])
 async def read_users():
     return {"message": "Read all users"}
 
-def _to_float(value, default: float = 0.0) -> float:
+def _to_float(value, default: float = 0.0, min_val: float = None, max_val: float = None) -> float:
+    """
+    Convert value to float with optional range validation.
+    Returns default if value is invalid or out of range.
+    """
     try:
         if value is None:
             return default
         if isinstance(value, (int, float)):
-            return float(value)
-        value_str = str(value).strip()
-        if value_str == "":
+            result = float(value)
+        else:
+            value_str = str(value).strip()
+            if value_str == "":
+                return default
+            result = float(value_str)
+        
+        # Check for NaN or Infinity
+        if not (result == result) or result == float('inf') or result == float('-inf'):
             return default
-        return float(value_str)
-    except Exception:
+        
+        # Range validation
+        if min_val is not None and result < min_val:
+            return default
+        if max_val is not None and result > max_val:
+            return default
+        
+        return result
+    except (ValueError, TypeError, OverflowError):
         return default
 
-def _to_int(value, default: int = 0) -> int:
+def _to_int(value, default: int = 0, min_val: int = None, max_val: int = None) -> int:
+    """
+    Convert value to int with optional range validation.
+    Returns default if value is invalid or out of range.
+    """
     try:
         if value is None:
             return default
         if isinstance(value, bool):  # Prevent True/False → 1/0 confusion
             return default
         if isinstance(value, (int, float)):
-            return int(value)
-        value_str = str(value).strip()
-        if value_str == "":
+            result = int(value)
+        else:
+            value_str = str(value).strip()
+            if value_str == "":
+                return default
+            result = int(float(value_str))  # Handle "123.0" or "45.67" properly
+        
+        # Range validation
+        if min_val is not None and result < min_val:
             return default
-        return int(float(value_str))  # Handle "123.0" or "45.67" properly
-    except (ValueError, TypeError):
+        if max_val is not None and result > max_val:
+            return default
+        
+        return result
+    except (ValueError, TypeError, OverflowError):
         return default
 
 @router.get("/simulation")
@@ -93,50 +123,50 @@ async def read_simulation(request: Request):
         "入力!E7": input_data.get("入力!E7"),
         "入力!E8": _to_int(input_data.get("入力!E8")),
         "入力!G8": _to_int(input_data.get("入力!G8")),
-        "入力!E9": _to_float(input_data.get("入力!E9")),
-        "入力!E10": _to_float(input_data.get("入力!E10")),
-        "入力!E12": _to_float(input_data.get("入力!E12")),
+        "入力!E9": _to_float(input_data.get("入力!E9"), 0.0, 0.0, 1000000000000.0),  # Property price: 0-1T yen
+        "入力!E10": _to_float(input_data.get("入力!E10"), 0.0, 0.0, 1000000000000.0),  # Own price: 0-1T yen
+        "入力!E12": _to_float(input_data.get("入力!E12"), 0.0, 0.0, 1000000000000.0),  # Borrow price: 0-1T yen
         "入力!E13": _to_int(input_data.get("入力!E13")),
-        "入力!E14": _to_float(input_data.get("入力!E14")),
+        "入力!E14": _to_float(input_data.get("入力!E14"), 0.0, 0.0, 100.0),  # Interest rate: 0-100%
         "入力!E15": _to_int(input_data.get("入力!E15")),
-        "入力!G15": _to_float(input_data.get("入力!G15")),
+        "入力!G15": _to_float(input_data.get("入力!G15"), 0.0, 0.0, 100.0),  # Rate increase: 0-100%
         "入力!E17": _to_int(input_data.get("入力!E17")),
-        "入力!G17": _to_float(input_data.get("入力!G17")),
+        "入力!G17": _to_float(input_data.get("入力!G17"), 0.0, 0.0, 100000000.0),  # Early repayment: 0-100M yen
         "入力!E16": _to_int(input_data.get("入力!E16")),
         "入力!G16": _to_int(input_data.get("入力!G16")),
         "入力!E18": _to_int(input_data.get("入力!E18")),
-        "入力!E20": _to_float(input_data.get("入力!E20")),
+        "入力!E20": _to_float(input_data.get("入力!E20"), 0.0, 0.0, 100000000.0),  # Monthly rent: 0-100M yen
         "入力!E21": _to_int(input_data.get("入力!E21")),
-        "入力!G21": _to_float(input_data.get("入力!G21")),
+        "入力!G21": _to_float(input_data.get("入力!G21"), 0.0, 0.0, 100.0),  # Decline rate: 0-100%
         "入力!E22": _to_int(input_data.get("入力!E22")),
         "入力!G22": _to_int(input_data.get("入力!G22")),
         "入力!E23": _to_int(input_data.get("入力!E23")),
-        "入力!G23": _to_float(input_data.get("入力!G23")),
+        "入力!G23": _to_float(input_data.get("入力!G23"), 0.0, 0.0, 100000000.0),  # Rent change price: 0-100M yen
         "入力!E24": _to_int(input_data.get("入力!E24")),
         "入力!G24": _to_int(input_data.get("入力!G24")),
-        "入力!E25": _to_float(input_data.get("入力!E25")),
-        "入力!E26": _to_float(input_data.get("入力!E26")),
+        "入力!E25": _to_float(input_data.get("入力!E25"), 0.0, 0.0, 10000000.0),  # Management fee: 0-10M yen/month
+        "入力!E26": _to_float(input_data.get("入力!E26"), 0.0, 0.0, 10000000.0),  # Repair fund: 0-1M yen/month
         "入力!E27": _to_int(input_data.get("入力!E27")),
-        "入力!G27": _to_float(input_data.get("入力!G27")),
-        "入力!E29": _to_float(input_data.get("入力!E29")),
+        "入力!G27": _to_float(input_data.get("入力!G27"), 0.0, 0.0, 100.0),  # Repair rate: 0-100%
         "入力!E28": _to_int(input_data.get("入力!E28")),
         "入力!G28": _to_int(input_data.get("入力!G28")),
+        "入力!E29": _to_float(input_data.get("入力!E29"), 0.0, 0.0, 10000000.0),  # Collection fee: 0-1M yen/month
         "入力!E30": _to_int(input_data.get("入力!E30")),
-        "入力!G30": _to_float(input_data.get("入力!G30")),
+        "入力!G30": _to_float(input_data.get("入力!G30"), 0.0, 0.0, 10000000.0),  # Equipment repair: 0-10M yen
         "入力!E31": _to_int(input_data.get("入力!E31")),
         "入力!G31": _to_int(input_data.get("入力!G31")),
         "入力!E32": _to_int(input_data.get("入力!E32")),
-        "入力!G32": _to_float(input_data.get("入力!G32")),
+        "入力!G32": _to_float(input_data.get("入力!G32"), 0.0, 0.0, 10000000.0),  # Restoration price: 0-10M yen
         "入力!E33": _to_float(input_data.get("入力!E33")),
         "入力!E34": _to_float(input_data.get("入力!E34")),
         "入力!E35": _to_float(input_data.get("入力!E35")),
         "入力!E36": _to_float(input_data.get("入力!E36")),
         "入力!G36": _to_float(input_data.get("入力!G36")),
         "入力!E37": _to_float(input_data.get("入力!E37")),
-        "入力!E39": _to_float(input_data.get("入力!E39")),
-        "入力!G39": _to_float(input_data.get("入力!G39")),
+        "入力!E39": _to_float(input_data.get("入力!E39"), 0.0, 0.0, 1000000000000.0),  # Sale price: 0-1T yen
+        "入力!G39": _to_float(input_data.get("入力!G39"), 0.0, 0.0, 1000.0),  # Sale rate: 0-1000%
         "入力!E40": _to_int(input_data.get("入力!E40")),
-        "入力!G40": _to_float(input_data.get("入力!G40")),
+        "入力!G40": _to_float(input_data.get("入力!G40"), 0.0, 0.0, 100.0),  # Sale rate 1: 0-100%
         "入力!E41": _to_int(input_data.get("入力!E41")),
         "入力!G41": _to_int(input_data.get("入力!G41")),
         "入力!E43": _to_float(input_data.get("入力!E43")),

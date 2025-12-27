@@ -180,8 +180,11 @@ export function useChart(title: string, saleValue: number) {
 		const largeNum = Math.max(maxCumulative, maxLoan)
 		
 		// Add 10% padding to the max value for better visualization, with a minimum of 10
-		const yAxisMax = Math.max(largeNum * 1.1, 10)
-		
+		let yAxisMax = 2000
+		if(yAxisMax < largeNum * 1.1) {
+			yAxisMax = Math.max(largeNum * 1.1, 10)
+		}
+
 		// Get min and max years from the years array
 		const minYear = Math.min(...data.years)
 		const maxYear = Math.max(...data.years)
