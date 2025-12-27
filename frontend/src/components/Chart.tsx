@@ -19,6 +19,8 @@ export function useChart(title: string) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const plotRef = useRef<uPlot | null>(null)
 	const dataRef = useRef<[number[], number[], number[], number[], number[], number[]]>([[], [], [], [], [], []])
+	const nonZeroYearsRef = useRef<number[]>([])
+	
 	useEffect(() => {
 		if (!containerRef.current) return
 		const opts: uPlot.Options = {
@@ -33,6 +35,29 @@ export function useChart(title: string) {
 				y: {
 					range: [0, 10000]
 				}
+			},
+			hooks: {
+				draw: [
+					(u: uPlot) => {
+						// Draw vertical lines at years where saleValue is not 0
+						const ctx = u.ctx
+						
+						ctx.save()
+						ctx.strokeStyle = '#ff9800'
+						ctx.lineWidth = 2
+						ctx.setLineDash([5, 5]) // Dashed line
+						
+						nonZeroYearsRef.current.forEach(year => {
+							const xPos = u.valToPos(year, 'x', true)
+							ctx.beginPath()
+							ctx.moveTo(xPos, u.bbox.top)
+							ctx.lineTo(xPos, u.bbox.top + u.bbox.height)
+							ctx.stroke()
+						})
+						
+						ctx.restore()
+					}
+				]
 			},
 			series: [
 				{ label: '(年度)' },
@@ -106,6 +131,15 @@ export function useChart(title: string) {
 		// Get min and max years from the years array
 		const minYear = Math.min(...data.years)
 		const maxYear = Math.max(...data.years)
+		
+		// Find years where saleValue is not 0
+		const nonZeroYears: number[] = []
+		for (let i = 0; i < data.saleValue.length; i++) {
+			if (data.saleValue[i] !== 0) {
+				nonZeroYears.push(data.years[i])
+			}
+		}
+		nonZeroYearsRef.current = nonZeroYears
 		
 		dataRef.current = [
 			data.years,
