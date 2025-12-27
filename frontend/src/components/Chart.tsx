@@ -28,7 +28,7 @@ export function useChart(title: string) {
 			scales: { 
 				x: { 
 					time: false,
-					range: [new Date().getFullYear(), new Date().getFullYear() + 59]
+					range: (u, dataMin, dataMax) => [dataMin, dataMax]
 				},
 				y: {
 					range: [0, 10000]
@@ -73,7 +73,8 @@ export function useChart(title: string) {
 					ticks: {
 						show: true,
 						size: 4
-					}
+					},
+					values: (u, splits) => splits.map(v => Math.round(v))
 				}, 
 				{ 
 					grid: { show: true },
@@ -94,6 +95,18 @@ export function useChart(title: string) {
 		}
 	}, [title])
 	const setData = (data: ChartData) => {
+		// Find the largest value between cumulativeBalance and loanBalance
+		const maxCumulative = Math.max(...data.cumulativeBalance, 0)
+		const maxLoan = Math.max(...data.loanBalance, 0)
+		const largeNum = Math.max(maxCumulative, maxLoan)
+		
+		// Add 10% padding to the max value for better visualization, with a minimum of 10
+		const yAxisMax = Math.max(largeNum * 1.1, 10)
+		
+		// Get min and max years from the years array
+		const minYear = Math.min(...data.years)
+		const maxYear = Math.max(...data.years)
+		
 		dataRef.current = [
 			data.years,
 			data.saleValue,
@@ -103,6 +116,12 @@ export function useChart(title: string) {
 			data.loanBalance
 		]
 		plotRef.current?.setData(dataRef.current)
+		
+		// Update X-axis scale dynamically using years array
+		plotRef.current?.setScale('x', { min: minYear, max: maxYear })
+		
+		// Update Y-axis scale dynamically
+		plotRef.current?.setScale('y', { min: 0, max: yAxisMax })
 	}
 
 	return { containerRef, setData }
