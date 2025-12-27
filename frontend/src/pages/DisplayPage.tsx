@@ -65,7 +65,7 @@ export default function DisplayPage() {
 	  };
 	  
 
-	const { containerRef, setData } = useChart('収支シミュレーション')
+	const { containerRef, setData } = useChart('収支シミュレーション', output_one[`出力1!V3`])
 
 	const loadData = async () => {
 		try {

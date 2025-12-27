@@ -15,11 +15,12 @@ export type ChartData = {
 	loanBalance: number[]
 }
 
-export function useChart(title: string) {
+export function useChart(title: string, saleValue: number) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const plotRef = useRef<uPlot | null>(null)
 	const dataRef = useRef<[number[], number[], number[], number[], number[], number[]]>([[], [], [], [], [], []])
 	const nonZeroYearsRef = useRef<number[]>([])
+	const saleValueRef = useRef<number>(saleValue)
 	
 	useEffect(() => {
 		if (!containerRef.current) return
@@ -39,7 +40,7 @@ export function useChart(title: string) {
 			hooks: {
 				draw: [
 					(u: uPlot) => {
-						// Draw vertical lines at years where saleValue is not 0
+						// Draw vertical lines where startYear + saleValue equals a year on the X-axis
 						const ctx = u.ctx
 						
 						ctx.save()
@@ -118,7 +119,12 @@ export function useChart(title: string) {
 			plotRef.current?.destroy()
 			plotRef.current = null
 		}
-	}, [title])
+	}, [title, saleValue])
+	
+	// Update saleValue ref when it changes
+	useEffect(() => {
+		saleValueRef.current = saleValue
+	}, [saleValue])
 	const setData = (data: ChartData) => {
 		// Find the largest value between cumulativeBalance and loanBalance
 		const maxCumulative = Math.max(...data.cumulativeBalance, 0)
@@ -132,14 +138,20 @@ export function useChart(title: string) {
 		const minYear = Math.min(...data.years)
 		const maxYear = Math.max(...data.years)
 		
-		// Find years where saleValue is not 0
-		const nonZeroYears: number[] = []
-		for (let i = 0; i < data.saleValue.length; i++) {
-			if (data.saleValue[i] !== 0) {
-				nonZeroYears.push(data.years[i])
+		// Find year where startYear + saleValue equals a year on the X-axis
+		const startYear = Math.min(...data.years)
+		const yearsSet = new Set(data.years)
+		const matchingYears: number[] = []
+		
+		// Use the single saleValue parameter (not the array)
+		if (saleValueRef.current != null && !isNaN(saleValueRef.current) && saleValueRef.current !== 0) {
+			const calculatedYear = startYear + saleValueRef.current
+			// Check if the calculated year exists in the years array
+			if (yearsSet.has(calculatedYear)) {
+				matchingYears.push(calculatedYear)
 			}
 		}
-		nonZeroYearsRef.current = nonZeroYears
+		nonZeroYearsRef.current = matchingYears
 		
 		dataRef.current = [
 			data.years,
