@@ -22,6 +22,7 @@ export function useChart(title: string, saleValue: number) {
 	const nonZeroYearsRef = useRef<number[]>([])
 	const saleValueRef = useRef<number>(saleValue)
 	const maxValueYearRef = useRef<number | null>(null)
+	const yAxisMaxRef = useRef<number>(10000) // Store calculated Y-axis max to persist across re-renders
 	
 	useEffect(() => {
 		if (!containerRef.current) return
@@ -35,7 +36,7 @@ export function useChart(title: string, saleValue: number) {
 					range: (u, dataMin, dataMax) => [dataMin, dataMax]
 				},
 				y: {
-					range: [0, 10000]
+					range: [0, yAxisMaxRef.current] // Use stored Y-axis max from ref
 				}
 			},
 			hooks: {
@@ -184,6 +185,9 @@ export function useChart(title: string, saleValue: number) {
 		if(yAxisMax < largeNum * 1.1) {
 			yAxisMax = Math.max(largeNum * 1.1, 10)
 		}
+		
+		// Store the calculated Y-axis max in ref to persist across re-renders
+		yAxisMaxRef.current = yAxisMax
 
 		// Get min and max years from the years array
 		const minYear = Math.min(...data.years)
