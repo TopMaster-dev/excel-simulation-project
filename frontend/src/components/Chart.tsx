@@ -33,10 +33,9 @@ export function useChart(title: string, saleValue: number) {
 			scales: { 
 				x: { 
 					time: false,
-					range: (u, dataMin, dataMax) => [dataMin, dataMax]
 				},
 				y: {
-					range: [0, yAxisMaxRef.current] // Use stored Y-axis max from ref
+					range: (u, min, max) => [0, yAxisMaxRef.current ?? max], // Use stored Y-axis max from ref
 				}
 			},
 			hooks: {

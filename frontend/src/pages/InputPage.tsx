@@ -187,6 +187,8 @@ export default function InputPage() {
 			(data as Record<string, any>)[excelKey] = safeNum(formData[formKey as keyof typeof formData]);
 		}
 		try {
+			console.log(data);
+			
 			const response = await fetch(`${API_URL}/simulation`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
